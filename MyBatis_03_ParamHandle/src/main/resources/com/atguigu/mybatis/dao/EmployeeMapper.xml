@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mybatis.dao.EmployeeMapper">
+
+    <!--  public Employee getEmpByIdAndLastName(Integer id,String lastName) -->
+    <!--
+        实际上底层是个 Map，存放了解析后的参数
+        因为此方法使用了注解，所以会得到相应的参数名称，故可以直接使用参数名(#{id}, #{lastName})
+
+        注意和下个方法对比
+     -->
+    <select id="getEmpByIdAndLastName" resultType="com.atguigu.mybatis.bean.Employee">
+        select * from tbl_employee where id = #{id} and last_name = #{lastName}
+    </select>
+
+    <!-- Employee getEmpByIdAndLastNameWithoutParam(Integer id, String lastName); -->
+    <!--
+        SELECT * FROM tbl_employee WHERE id = #{id} AND last_name = #{lastName}   ==>  ERROR!
+        因为此方法没有使用 @Param 注解，导致 Mybatis 在参数解析的时候，不会直接得到参数名称
+
+        SELECT * FROM tbl_employee WHERE id = #{param1} AND last_name = #{param2}  ==> OK
+        SELECT * FROM tbl_employee WHERE id = #{0} AND last_name = #{1}  ==> OK
+        上述两个方法可行的原因是：此方法没有使用 @Param 注解，所以 Mybatis 在参数解析的时候，会将 [0, 1, param1, param2] 存下来
+
+        注意和上个方法对比
+    -->
+    <select id="getEmpByIdAndLastNameWithoutParam" resultType="com.atguigu.mybatis.bean.Employee">
+        SELECT * FROM tbl_employee WHERE id = #{0} AND last_name = #{1}
+    </select>
+
+    <!-- public Employee getEmpByMap(Map<String, Object> map); -->
+    <select id="getEmpByMap" resultType="com.atguigu.mybatis.bean.Employee">
+        select * from ${tableName} where id = ${id} and last_name = #{lastName}
+    </select>
+
+</mapper>
