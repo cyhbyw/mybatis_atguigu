@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.atguigu.mybatis.dao.EmployeeMapper">
+
+    <!--public Map<Integer, Employee> getEmpByLastNameLikeReturnMap(String lastName);  -->
+    <select id="getEmpByLastNameLikeReturnMap" resultType="com.atguigu.mybatis.bean.Employee">
+        select * from tbl_employee where last_name like #{lastName}
+    </select>
+
+    <!--public Map<Integer, Employee> getEmpByLastNameLikeReturnMap2(String lastName);  -->
+    <select id="getEmpByLastNameLikeReturnMap2" resultType="com.atguigu.mybatis.bean.Employee">
+        select * from tbl_employee where last_name like #{lastName}
+    </select>
+
+    <!--public Map<String, Object> getEmpByIdReturnMap(Integer id);  -->
+    <select id="getEmpByIdReturnMap" resultType="map">
+        select * from tbl_employee where id = #{id}
+    </select>
+
+    <!-- public List<Employee> getEmpsByLastNameLike(String lastName); -->
+    <!--resultType：如果返回的是一个集合，要写集合中元素的类型  -->
+    <select id="getEmpsByLastNameLike" resultType="com.atguigu.mybatis.bean.Employee">
+        select * from tbl_employee where last_name like #{lastName}
+    </select>
+
+</mapper>
