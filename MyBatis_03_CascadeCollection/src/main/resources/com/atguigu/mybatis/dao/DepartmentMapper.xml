@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.atguigu.mybatis.dao.DepartmentMapper">
+
+    <select id="getDeptById" resultType="com.atguigu.mybatis.bean.Department">
+        SELECT * FROM tbl_dept WHERE id = #{id}
+    </select>
+
+
+    <!--////////////////////////////////////////////////////////////////////////////////-->
+
+
+    <!-- did | departmentName | eid  | lastName | email  | gender -->
+    <!--嵌套结果集的方式，使用collection标签定义关联的集合类型的属性封装规则  -->
+    <resultMap type="com.atguigu.mybatis.bean.Department" id="MyDept">
+        <id column="did" property="id"/>
+        <result column="departmentName" property="departmentName"/>
+        <!--
+            collection定义关联集合类型的属性的封装规则
+            ofType:指定集合里面元素的类型
+        -->
+        <collection property="employeeList" ofType="com.atguigu.mybatis.bean.Employee">
+            <!-- 定义这个集合中元素的封装规则 -->
+            <id column="eid" property="id"/>
+            <result column="lastName" property="lastName"/>
+            <result column="email" property="email"/>
+            <result column="gender" property="gender"/>
+        </collection>
+    </resultMap>
+
+    <select id="getDeptByIdPlus" resultMap="MyDept">
+        SELECT d.id did, d.departmentName, e.id eid, e.last_name lastName, e.email email, e.gender gender
+        FROM tbl_dept d
+        LEFT JOIN tbl_employee e
+        ON d.id = e.d_id
+        WHERE d.id = #{id}
+    </select>
+
+
+    <!--////////////////////////////////////////////////////////////////////////////////-->
+
+
+    <!-- collection：分段查询 -->
+    <resultMap type="com.atguigu.mybatis.bean.Department" id="MyDeptStep">
+        <id column="id" property="id"/>
+        <id column="departmentName" property="departmentName"/>
+        <collection property="employeeList" column="id" fetchType="lazy"
+                    select="com.atguigu.mybatis.dao.EmployeeMapperPlus.getEmpsByDeptId">
+        </collection>
+    </resultMap>
+
+    <select id="getDeptByIdStep" resultMap="MyDeptStep">
+        select id, departmentName from tbl_dept where id = #{id}
+    </select>
+
+    <!-- 扩展：多列的值传递过去： 将多列的值封装map传递； column="{key1=column1,key2=column2}"
+        fetchType="lazy"：表示使用延迟加载； - lazy：延迟 - eager：立即
+     -->
+
+</mapper>
