@@ -5,12 +5,12 @@
 
 <mapper namespace="com.atguigu.mybatis.dao.EmployeeMapper">
 
-    <!--public Map<Integer, Employee> getEmpByLastNameLikeReturnMap(String lastName);  -->
+    <!-- Map<Integer, Employee> getEmpByLastNameLikeReturnMap(String lastName);  -->
     <select id="getEmpByLastNameLikeReturnMap" resultType="com.atguigu.mybatis.bean.Employee">
         select * from tbl_employee where last_name like #{lastName}
     </select>
 
-    <!--public Map<Integer, Employee> getEmpByLastNameLikeReturnMap2(String lastName);  -->
+    <!-- Map<String, Employee> getEmpByLastNameLikeReturnMap2(String lastName);  -->
     <select id="getEmpByLastNameLikeReturnMap2" resultType="com.atguigu.mybatis.bean.Employee">
         select * from tbl_employee where last_name like #{lastName}
     </select>
