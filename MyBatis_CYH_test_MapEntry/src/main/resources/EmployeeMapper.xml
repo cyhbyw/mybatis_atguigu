@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.atguigu.mybatis.dao.EmployeeMapper">
+
+    <!-- 自定义的 CYHPair  没有实现 Map.Entry，可以正常工作 -->
+    <update id="updateByCYHPair">
+        <foreach collection="list" separator=";" item="x">
+            UPDATE employee SET name = #{x.right} WHERE id = #{x.left}
+        </foreach>
+    </update>
+
+    <!-- Apache Commons Pair 实现了 Map.Entry，不能正常工作 -->
+    <update id="updateByApacheCommonsPair">
+        <foreach collection="list" separator=";" item="x">
+            UPDATE employee SET name = #{x.right} WHERE id = #{x.left}
+        </foreach>
+    </update>
+
+
+</mapper>
